@@ -1,6 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../data/datasources/care_events_datasource.dart';
+import '../../domain/entities/audit_flag_entity.dart';
 import '../../domain/entities/care_event_entity.dart';
+import '../../domain/entities/verification_detail_entity.dart';
 import '../../domain/entities/verification_status_entity.dart';
 
 part 'care_events_provider.g.dart';
@@ -106,6 +108,51 @@ Future<CareEventsStats> careEventsStats(Ref ref) async {
   );
 }
 
+// Flagged Events Provider
+@riverpod
+Future<List<CareEventEntity>> flaggedCareEvents(Ref ref) async {
+  final datasource = ref.watch(careEventsDatasourceProvider);
+  final models = await datasource.fetchFlaggedEvents();
+  return models.map((model) => model.toEntity()).toList();
+}
+
+// Audit Flags Provider
+@riverpod
+Future<List<AuditFlagEntity>> auditFlags(Ref ref, String eventId) async {
+  final datasource = ref.watch(careEventsDatasourceProvider);
+  final models = await datasource.fetchAuditFlags(eventId);
+  return models.map((model) => model.toEntity()).toList();
+}
+
+// Verification Details Provider
+@riverpod
+Future<VerificationDetailEntity> verificationDetails(
+  Ref ref,
+  String eventId,
+) async {
+  final datasource = ref.watch(careEventsDatasourceProvider);
+  final model = await datasource.fetchVerificationDetails(eventId);
+  return model.toEntity();
+}
+
+// Audit Statistics Provider
+@riverpod
+Future<AuditStatistics> auditStatistics(Ref ref) async {
+  final datasource = ref.watch(careEventsDatasourceProvider);
+  final stats = await datasource.fetchAuditStats();
+
+  return AuditStatistics(
+    totalEvents: stats['totalEvents'] as int,
+    verified: stats['verified'] as int,
+    flagged: stats['flagged'] as int,
+    pending: stats['pending'] as int,
+    resolved: stats['resolved'] as int,
+    verificationRate: stats['verificationRate'] as double,
+    flagRate: stats['flagRate'] as double,
+    resolutionRate: stats['resolutionRate'] as double,
+  );
+}
+
 class CareEventsStats {
   final int total;
   final int verified;
@@ -121,5 +168,27 @@ class CareEventsStats {
     required this.flagged,
     required this.pending,
     required this.totalClaims,
+  });
+}
+
+class AuditStatistics {
+  final int totalEvents;
+  final int verified;
+  final int flagged;
+  final int pending;
+  final int resolved;
+  final double verificationRate;
+  final double flagRate;
+  final double resolutionRate;
+
+  AuditStatistics({
+    required this.totalEvents,
+    required this.verified,
+    required this.flagged,
+    required this.pending,
+    required this.resolved,
+    required this.verificationRate,
+    required this.flagRate,
+    required this.resolutionRate,
   });
 }

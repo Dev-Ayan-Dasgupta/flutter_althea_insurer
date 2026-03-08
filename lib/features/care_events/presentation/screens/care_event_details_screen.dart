@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/extensions.dart';
+import '../../../../core/widgets/shimmer_loading.dart';
+import '../../domain/entities/audit_flag_entity.dart';
 import '../../domain/entities/care_event_entity.dart';
 import '../providers/care_events_provider.dart';
+import '../widgets/audit_flag_badge.dart';
 import '../widgets/verification_badge.dart';
 import '../widgets/event_timeline.dart';
+import '../widgets/verification_details_card.dart';
 
 class CareEventDetailsScreen extends ConsumerWidget {
   final String eventId;
@@ -76,6 +80,8 @@ class CareEventDetailsScreen extends ConsumerWidget {
             children: [
               _buildVerificationCard(context, event),
               SizedBox(height: 24),
+              _buildAuditSection(context, event),
+              SizedBox(height: 24),
               _buildTimelineCard(context, event),
               SizedBox(height: 24),
               _buildLocationCard(context, event),
@@ -97,6 +103,8 @@ class CareEventDetailsScreen extends ConsumerWidget {
         _buildMainInfoCard(context, event),
         SizedBox(height: 16),
         _buildVerificationCard(context, event),
+        SizedBox(height: 16),
+        _buildAuditSection(context, event),
         SizedBox(height: 16),
         _buildDescriptionCard(context, event),
         SizedBox(height: 16),
@@ -580,6 +588,103 @@ class CareEventDetailsScreen extends ConsumerWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  // Add these methods to the existing CareEventDetailsScreen class
+
+  Widget _buildAuditSection(BuildContext context, CareEventEntity event) {
+    return Consumer(
+      builder: (context, ref, child) {
+        final flagsAsync = ref.watch(auditFlagsProvider(event.id));
+        final verificationAsync = ref.watch(
+          verificationDetailsProvider(event.id),
+        );
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Audit Flags Card
+            flagsAsync.when(
+              data: (flags) => flags.isEmpty
+                  ? SizedBox.shrink()
+                  : Column(
+                      children: [
+                        _buildAuditFlagsCard(context, flags),
+                        SizedBox(height: 16),
+                      ],
+                    ),
+              loading: () => Padding(
+                padding: EdgeInsets.only(bottom: 16),
+                child: ShimmerCard(height: 200),
+              ),
+              error: (error, stack) => SizedBox.shrink(),
+            ),
+
+            // Verification Details Card
+            verificationAsync.when(
+              data: (verification) =>
+                  VerificationDetailsCard(details: verification),
+              loading: () => ShimmerCard(height: 300),
+              error: (error, stack) => SizedBox.shrink(),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildAuditFlagsCard(
+    BuildContext context,
+    List<AuditFlagEntity> flags,
+  ) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppColors.error.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: AppColors.error.withValues(alpha: 0.3),
+          width: 2,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.flag, color: AppColors.error, size: 20),
+              SizedBox(width: 8),
+              Text(
+                'Audit Flags',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.error,
+                ),
+              ),
+              Spacer(),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: AppColors.error.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  '${flags.length} flag${flags.length != 1 ? 's' : ''}',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: AppColors.error,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 16),
+          for (var flag in flags) AuditFlagBadge(flag: flag),
+        ],
       ),
     );
   }

@@ -7,29 +7,50 @@ import '../../../care_events/presentation/widgets/filter_chip_widget.dart';
 import '../providers/risk_engine_provider.dart';
 import '../widgets/risk_profile_card.dart';
 import '../../domain/entities/risk_profile_entity.dart';
+import 'chronic_disease_monitoring_screen.dart';
 
-class RiskEngineScreen extends ConsumerWidget {
+class RiskEngineScreen extends ConsumerStatefulWidget {
   const RiskEngineScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final profilesAsync = ref.watch(riskProfilesProvider);
-    final statsAsync = ref.watch(riskEngineStatsProvider);
-    final filter = ref.watch(riskEngineFilterProvider);
+  ConsumerState<RiskEngineScreen> createState() => _RiskEngineScreenState();
+}
+
+class _RiskEngineScreenState extends ConsumerState<RiskEngineScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final isDesktop = context.isDesktop;
 
     return Scaffold(
-      body: RefreshIndicator(
-        onRefresh: () async {
-          ref.invalidate(riskProfilesProvider);
-          ref.invalidate(riskEngineStatsProvider);
-        },
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(isDesktop ? 24 : 16),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(120),
+        child: Container(
+          padding: EdgeInsets.fromLTRB(
+            isDesktop ? 24 : 16,
+            16,
+            isDesktop ? 24 : 16,
+            0,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -46,16 +67,17 @@ class RiskEngineScreen extends ConsumerWidget {
                           SizedBox(width: 8),
                           Text(
                             'AI Risk Engine',
-                            style: Theme.of(context).textTheme.headlineSmall
-                                ?.copyWith(fontWeight: FontWeight.w700),
+                            style: theme.textTheme.headlineSmall?.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ],
                       ),
                       SizedBox(height: 4),
                       Text(
                         'Predictive analytics for proactive care management',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).brightness == Brightness.dark
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: isDark
                               ? AppColors.darkTextSecondary
                               : AppColors.lightTextSecondary,
                         ),
@@ -65,37 +87,102 @@ class RiskEngineScreen extends ConsumerWidget {
                   IconButton(
                     icon: Icon(Icons.refresh),
                     onPressed: () {
-                      ref.invalidate(riskProfilesProvider);
-                      ref.invalidate(riskEngineStatsProvider);
+                      if (_tabController.index == 0) {
+                        ref.invalidate(riskProfilesProvider);
+                        ref.invalidate(riskEngineStatsProvider);
+                      } else {
+                        ref.invalidate(chronicDiseaseCohortsProvider);
+                      }
                     },
                     tooltip: 'Refresh',
                   ),
                 ],
               ),
-              SizedBox(height: 24),
-
-              // Stats Cards
-              statsAsync.when(
-                data: (stats) => _buildStatsRow(context, stats, isDesktop),
-                loading: () => _buildStatsShimmer(isDesktop),
-                error: (error, stack) => _buildErrorCard(context, error),
-              ),
-              SizedBox(height: 24),
-
-              // Filters
-              _buildFilters(context, ref, filter),
-              SizedBox(height: 24),
-
-              // Profiles List
-              profilesAsync.when(
-                data: (profiles) => profiles.isEmpty
-                    ? _buildEmptyState(context)
-                    : _buildProfilesList(profiles),
-                loading: () => _buildProfilesShimmer(),
-                error: (error, stack) => _buildErrorCard(context, error),
+              SizedBox(height: 16),
+              TabBar(
+                controller: _tabController,
+                labelColor: AppColors.primarySteelBlue,
+                unselectedLabelColor: isDark
+                    ? AppColors.darkTextSecondary
+                    : AppColors.lightTextSecondary,
+                indicatorColor: AppColors.primarySteelBlue,
+                indicatorWeight: 3,
+                tabs: [
+                  Tab(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.person, size: 18),
+                        SizedBox(width: 8),
+                        Text('Risk Profiles'),
+                      ],
+                    ),
+                  ),
+                  Tab(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.health_and_safety, size: 18),
+                        SizedBox(width: 8),
+                        Text('Chronic Disease'),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
+        ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [_RiskProfilesTab(), ChronicDiseaseMonitoringScreen()],
+      ),
+    );
+  }
+}
+
+class _RiskProfilesTab extends ConsumerWidget {
+  const _RiskProfilesTab();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final profilesAsync = ref.watch(riskProfilesProvider);
+    final statsAsync = ref.watch(riskEngineStatsProvider);
+    final filter = ref.watch(riskEngineFilterProvider);
+    final isDesktop = context.isDesktop;
+
+    return RefreshIndicator(
+      onRefresh: () async {
+        ref.invalidate(riskProfilesProvider);
+        ref.invalidate(riskEngineStatsProvider);
+      },
+      child: SingleChildScrollView(
+        padding: EdgeInsets.all(isDesktop ? 24 : 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Stats Cards
+            statsAsync.when(
+              data: (stats) => _buildStatsRow(context, stats, isDesktop),
+              loading: () => _buildStatsShimmer(isDesktop),
+              error: (error, stack) => _buildErrorCard(context, error),
+            ),
+            SizedBox(height: 24),
+
+            // Filters
+            _buildFilters(context, ref, filter),
+            SizedBox(height: 24),
+
+            // Profiles List
+            profilesAsync.when(
+              data: (profiles) => profiles.isEmpty
+                  ? _buildEmptyState(context)
+                  : _buildProfilesList(profiles),
+              loading: () => _buildProfilesShimmer(),
+              error: (error, stack) => _buildErrorCard(context, error),
+            ),
+          ],
         ),
       ),
     );

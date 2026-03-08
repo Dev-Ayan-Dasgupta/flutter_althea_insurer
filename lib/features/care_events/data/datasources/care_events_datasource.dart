@@ -1,6 +1,8 @@
 import 'dart:math';
 import '../../../../core/utils/logger.dart';
+import '../models/audit_flag_model.dart';
 import '../models/care_event_model.dart';
+import '../models/verification_detail_model.dart';
 import '../models/verification_status_model.dart';
 
 class CareEventsDatasource {
@@ -154,6 +156,190 @@ class CareEventsDatasource {
     } catch (e) {
       Logger.error(
         'Error fetching care event',
+        tag: 'CareEventsDatasource',
+        error: e,
+      );
+      rethrow;
+    }
+  }
+
+  // Add to existing CareEventsDatasource class
+
+  // Fetch flagged events for audit
+  Future<List<CareEventModel>> fetchFlaggedEvents() async {
+    try {
+      Logger.info('Fetching flagged events', tag: 'CareEventsDatasource');
+
+      await Future.delayed(Duration(milliseconds: 600));
+
+      final allEvents = await fetchCareEvents(limit: 50);
+
+      // Filter events with flags
+      final flaggedEvents = allEvents.where((event) {
+        return event.verificationStatus.status == 'flagged' ||
+            event.verificationStatus.status == 'pending';
+      }).toList();
+
+      Logger.info(
+        'Fetched ${flaggedEvents.length} flagged events',
+        tag: 'CareEventsDatasource',
+      );
+      return flaggedEvents;
+    } catch (e) {
+      Logger.error(
+        'Error fetching flagged events',
+        tag: 'CareEventsDatasource',
+        error: e,
+      );
+      rethrow;
+    }
+  }
+
+  // Fetch audit flags for an event
+  Future<List<AuditFlagModel>> fetchAuditFlags(String eventId) async {
+    try {
+      Logger.info(
+        'Fetching audit flags for event: $eventId',
+        tag: 'CareEventsDatasource',
+      );
+
+      await Future.delayed(Duration(milliseconds: 300));
+
+      final flags = <AuditFlagModel>[];
+
+      // Generate random flags based on event
+      if (_random.nextDouble() < 0.3) {
+        flags.add(
+          AuditFlagModel(
+            id: 'AF${_random.nextInt(1000)}',
+            type: 'gps_discrepancy',
+            severity: 'medium',
+            description: 'GPS location mismatch',
+            reason:
+                'Recorded GPS coordinates are 50m away from patient registered address',
+            detectedAt: DateTime.now().subtract(
+              Duration(minutes: _random.nextInt(60)),
+            ),
+            requiresInvestigation: true,
+          ),
+        );
+      }
+
+      if (_random.nextDouble() < 0.2) {
+        flags.add(
+          AuditFlagModel(
+            id: 'AF${_random.nextInt(1000)}',
+            type: 'short_duration',
+            severity: 'low',
+            description: 'Service duration shorter than expected',
+            reason: 'Visit lasted 12 minutes, expected minimum 15 minutes',
+            detectedAt: DateTime.now().subtract(
+              Duration(minutes: _random.nextInt(60)),
+            ),
+            requiresInvestigation: false,
+          ),
+        );
+      }
+
+      if (_random.nextDouble() < 0.15) {
+        flags.add(
+          AuditFlagModel(
+            id: 'AF${_random.nextInt(1000)}',
+            type: 'time_anomaly',
+            severity: 'high',
+            description: 'Service time outside normal hours',
+            reason: 'Visit logged at 11:45 PM, outside typical service hours',
+            detectedAt: DateTime.now().subtract(
+              Duration(minutes: _random.nextInt(60)),
+            ),
+            requiresInvestigation: true,
+          ),
+        );
+      }
+
+      Logger.info(
+        'Fetched ${flags.length} audit flags',
+        tag: 'CareEventsDatasource',
+      );
+      return flags;
+    } catch (e) {
+      Logger.error(
+        'Error fetching audit flags',
+        tag: 'CareEventsDatasource',
+        error: e,
+      );
+      rethrow;
+    }
+  }
+
+  // Fetch verification details for an event
+  Future<VerificationDetailModel> fetchVerificationDetails(
+    String eventId,
+  ) async {
+    try {
+      Logger.info(
+        'Fetching verification details for event: $eventId',
+        tag: 'CareEventsDatasource',
+      );
+
+      await Future.delayed(Duration(milliseconds: 400));
+
+      final hasManualOverride = _random.nextDouble() < 0.1;
+
+      return VerificationDetailModel(
+        bleVerified: _random.nextDouble() > 0.15,
+        gpsVerified: _random.nextDouble() > 0.1,
+        timestampVerified: _random.nextDouble() > 0.05,
+        bleDeviceId: 'BLE-${_random.nextInt(9999).toString().padLeft(4, '0')}',
+        gpsLatitude: 22.5726 + (_random.nextDouble() * 0.02 - 0.01),
+        gpsLongitude: 88.3639 + (_random.nextDouble() * 0.02 - 0.01),
+        gpsAccuracy: 5.0 + (_random.nextDouble() * 10),
+        actualStartTime: DateTime.now().subtract(Duration(hours: 2)),
+        actualEndTime: DateTime.now().subtract(Duration(hours: 1, minutes: 30)),
+        actualDuration: 30 + _random.nextInt(30),
+        expectedDuration: 45,
+        manualOverride: hasManualOverride,
+        overrideReason: hasManualOverride
+            ? 'Network connectivity issue at location'
+            : null,
+        overrideBy: hasManualOverride ? 'Supervisor John Doe' : null,
+      );
+    } catch (e) {
+      Logger.error(
+        'Error fetching verification details',
+        tag: 'CareEventsDatasource',
+        error: e,
+      );
+      rethrow;
+    }
+  }
+
+  // Fetch audit statistics
+  Future<Map<String, dynamic>> fetchAuditStats() async {
+    try {
+      Logger.info('Fetching audit statistics', tag: 'CareEventsDatasource');
+
+      await Future.delayed(Duration(milliseconds: 500));
+
+      final totalEvents = 500;
+      final verified = 425;
+      final flagged = 45;
+      final pending = 30;
+      final resolved = 38;
+
+      return {
+        'totalEvents': totalEvents,
+        'verified': verified,
+        'flagged': flagged,
+        'pending': pending,
+        'resolved': resolved,
+        'verificationRate': (verified / totalEvents * 100),
+        'flagRate': (flagged / totalEvents * 100),
+        'resolutionRate': (resolved / (flagged + pending) * 100),
+      };
+    } catch (e) {
+      Logger.error(
+        'Error fetching audit stats',
         tag: 'CareEventsDatasource',
         error: e,
       );

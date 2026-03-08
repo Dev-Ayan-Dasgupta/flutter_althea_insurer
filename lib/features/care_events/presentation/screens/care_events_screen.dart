@@ -6,29 +6,51 @@ import '../../../../core/widgets/shimmer_loading.dart';
 import '../providers/care_events_provider.dart';
 import '../widgets/care_event_card.dart';
 import '../widgets/filter_chip_widget.dart';
+import '../../domain/entities/care_event_entity.dart';
+import 'audit_console_screen.dart';
 
-class CareEventsScreen extends ConsumerWidget {
+class CareEventsScreen extends ConsumerStatefulWidget {
   const CareEventsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final careEventsAsync = ref.watch(careEventsProvider);
-    final statsAsync = ref.watch(careEventsStatsProvider);
-    final filter = ref.watch(careEventsFilterProvider);
+  ConsumerState<CareEventsScreen> createState() => _CareEventsScreenState();
+}
+
+class _CareEventsScreenState extends ConsumerState<CareEventsScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final isDesktop = context.isDesktop;
 
     return Scaffold(
-      body: RefreshIndicator(
-        onRefresh: () async {
-          ref.invalidate(careEventsProvider);
-          ref.invalidate(careEventsStatsProvider);
-        },
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(isDesktop ? 24 : 16),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(120),
+        child: Container(
+          padding: EdgeInsets.fromLTRB(
+            isDesktop ? 24 : 16,
+            16,
+            isDesktop ? 24 : 16,
+            0,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -37,14 +59,15 @@ class CareEventsScreen extends ConsumerWidget {
                     children: [
                       Text(
                         'Care Events',
-                        style: Theme.of(context).textTheme.headlineSmall
-                            ?.copyWith(fontWeight: FontWeight.w700),
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                       SizedBox(height: 4),
                       Text(
                         'Verified audit trail of all care activities',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).brightness == Brightness.dark
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: isDark
                               ? AppColors.darkTextSecondary
                               : AppColors.lightTextSecondary,
                         ),
@@ -54,37 +77,103 @@ class CareEventsScreen extends ConsumerWidget {
                   IconButton(
                     icon: Icon(Icons.refresh),
                     onPressed: () {
-                      ref.invalidate(careEventsProvider);
-                      ref.invalidate(careEventsStatsProvider);
+                      if (_tabController.index == 0) {
+                        ref.invalidate(careEventsProvider);
+                        ref.invalidate(careEventsStatsProvider);
+                      } else {
+                        ref.invalidate(flaggedCareEventsProvider);
+                        ref.invalidate(auditStatisticsProvider);
+                      }
                     },
                     tooltip: 'Refresh',
                   ),
                 ],
               ),
-              SizedBox(height: 24),
-
-              // Stats Cards
-              statsAsync.when(
-                data: (stats) => _buildStatsRow(context, stats, isDesktop),
-                loading: () => _buildStatsShimmer(isDesktop),
-                error: (error, stack) => _buildErrorCard(context, error),
-              ),
-              SizedBox(height: 24),
-
-              // Filters
-              _buildFilters(context, ref, filter),
-              SizedBox(height: 24),
-
-              // Events List
-              careEventsAsync.when(
-                data: (events) => events.isEmpty
-                    ? _buildEmptyState(context)
-                    : _buildEventsList(events),
-                loading: () => _buildEventsShimmer(),
-                error: (error, stack) => _buildErrorCard(context, error),
+              SizedBox(height: 16),
+              TabBar(
+                controller: _tabController,
+                labelColor: AppColors.primarySteelBlue,
+                unselectedLabelColor: isDark
+                    ? AppColors.darkTextSecondary
+                    : AppColors.lightTextSecondary,
+                indicatorColor: AppColors.primarySteelBlue,
+                indicatorWeight: 3,
+                tabs: [
+                  Tab(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.event_available, size: 18),
+                        SizedBox(width: 8),
+                        Text('All Events'),
+                      ],
+                    ),
+                  ),
+                  Tab(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.security, size: 18),
+                        SizedBox(width: 8),
+                        Text('Audit Console'),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
+        ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [_AllEventsTab(), AuditConsoleScreen()],
+      ),
+    );
+  }
+}
+
+class _AllEventsTab extends ConsumerWidget {
+  const _AllEventsTab();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final careEventsAsync = ref.watch(careEventsProvider);
+    final statsAsync = ref.watch(careEventsStatsProvider);
+    final filter = ref.watch(careEventsFilterProvider);
+    final isDesktop = context.isDesktop;
+
+    return RefreshIndicator(
+      onRefresh: () async {
+        ref.invalidate(careEventsProvider);
+        ref.invalidate(careEventsStatsProvider);
+      },
+      child: SingleChildScrollView(
+        padding: EdgeInsets.all(isDesktop ? 24 : 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Stats Cards
+            statsAsync.when(
+              data: (stats) => _buildStatsRow(context, stats, isDesktop),
+              loading: () => _buildStatsShimmer(isDesktop),
+              error: (error, stack) => _buildErrorCard(context, error),
+            ),
+            SizedBox(height: 24),
+
+            // Filters
+            _buildFilters(context, ref, filter),
+            SizedBox(height: 24),
+
+            // Events List
+            careEventsAsync.when(
+              data: (events) => events.isEmpty
+                  ? _buildEmptyState(context)
+                  : _buildEventsList(events),
+              loading: () => _buildEventsShimmer(),
+              error: (error, stack) => _buildErrorCard(context, error),
+            ),
+          ],
         ),
       ),
     );
@@ -207,7 +296,7 @@ class CareEventsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildEventsList(List<dynamic> events) {
+  Widget _buildEventsList(List<CareEventEntity> events) {
     return Column(
       children: events.map((event) => CareEventCard(event: event)).toList(),
     );

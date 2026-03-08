@@ -264,3 +264,238 @@ final class CareEventsStatsProvider
 }
 
 String _$careEventsStatsHash() => r'bbeb04f060e54418a59286e0c5a38c95f3decb0d';
+
+@ProviderFor(flaggedCareEvents)
+const flaggedCareEventsProvider = FlaggedCareEventsProvider._();
+
+final class FlaggedCareEventsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<CareEventEntity>>,
+          List<CareEventEntity>,
+          FutureOr<List<CareEventEntity>>
+        >
+    with
+        $FutureModifier<List<CareEventEntity>>,
+        $FutureProvider<List<CareEventEntity>> {
+  const FlaggedCareEventsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'flaggedCareEventsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$flaggedCareEventsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<CareEventEntity>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<CareEventEntity>> create(Ref ref) {
+    return flaggedCareEvents(ref);
+  }
+}
+
+String _$flaggedCareEventsHash() => r'1dbc56f06250dd4685dee3c0d6dba2e000c9b808';
+
+@ProviderFor(auditFlags)
+const auditFlagsProvider = AuditFlagsFamily._();
+
+final class AuditFlagsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<AuditFlagEntity>>,
+          List<AuditFlagEntity>,
+          FutureOr<List<AuditFlagEntity>>
+        >
+    with
+        $FutureModifier<List<AuditFlagEntity>>,
+        $FutureProvider<List<AuditFlagEntity>> {
+  const AuditFlagsProvider._({
+    required AuditFlagsFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'auditFlagsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$auditFlagsHash();
+
+  @override
+  String toString() {
+    return r'auditFlagsProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<AuditFlagEntity>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<AuditFlagEntity>> create(Ref ref) {
+    final argument = this.argument as String;
+    return auditFlags(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is AuditFlagsProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$auditFlagsHash() => r'272be9b7a3ee36e4db2cea79292e6ab84c4124ab';
+
+final class AuditFlagsFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<List<AuditFlagEntity>>, String> {
+  const AuditFlagsFamily._()
+    : super(
+        retry: null,
+        name: r'auditFlagsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  AuditFlagsProvider call(String eventId) =>
+      AuditFlagsProvider._(argument: eventId, from: this);
+
+  @override
+  String toString() => r'auditFlagsProvider';
+}
+
+@ProviderFor(verificationDetails)
+const verificationDetailsProvider = VerificationDetailsFamily._();
+
+final class VerificationDetailsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<VerificationDetailEntity>,
+          VerificationDetailEntity,
+          FutureOr<VerificationDetailEntity>
+        >
+    with
+        $FutureModifier<VerificationDetailEntity>,
+        $FutureProvider<VerificationDetailEntity> {
+  const VerificationDetailsProvider._({
+    required VerificationDetailsFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'verificationDetailsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$verificationDetailsHash();
+
+  @override
+  String toString() {
+    return r'verificationDetailsProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<VerificationDetailEntity> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<VerificationDetailEntity> create(Ref ref) {
+    final argument = this.argument as String;
+    return verificationDetails(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is VerificationDetailsProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$verificationDetailsHash() =>
+    r'278cbc8fdb73b22edad3cf103a51f4eda8b9adb7';
+
+final class VerificationDetailsFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<VerificationDetailEntity>, String> {
+  const VerificationDetailsFamily._()
+    : super(
+        retry: null,
+        name: r'verificationDetailsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  VerificationDetailsProvider call(String eventId) =>
+      VerificationDetailsProvider._(argument: eventId, from: this);
+
+  @override
+  String toString() => r'verificationDetailsProvider';
+}
+
+@ProviderFor(auditStatistics)
+const auditStatisticsProvider = AuditStatisticsProvider._();
+
+final class AuditStatisticsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<AuditStatistics>,
+          AuditStatistics,
+          FutureOr<AuditStatistics>
+        >
+    with $FutureModifier<AuditStatistics>, $FutureProvider<AuditStatistics> {
+  const AuditStatisticsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'auditStatisticsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$auditStatisticsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<AuditStatistics> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<AuditStatistics> create(Ref ref) {
+    return auditStatistics(ref);
+  }
+}
+
+String _$auditStatisticsHash() => r'3698dd3f901e6cdeb9534eedcf92ab73e79c010c';

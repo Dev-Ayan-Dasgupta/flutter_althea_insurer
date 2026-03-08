@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../data/datasources/risk_engine_datasource.dart';
+import '../../domain/entities/chronic_disease_cohort_entity.dart';
 import '../../domain/entities/risk_profile_entity.dart';
 
 part 'risk_engine_provider.g.dart';
@@ -52,6 +53,14 @@ Future<RiskProfileEntity> riskProfileDetails(Ref ref, String id) async {
   final datasource = ref.watch(riskEngineDatasourceProvider);
   final model = await datasource.fetchRiskProfileById(id);
   return model.toEntity();
+}
+
+// Add to existing providers
+@riverpod
+Future<List<ChronicDiseaseCohortEntity>> chronicDiseaseCohorts(Ref ref) async {
+  final datasource = ref.watch(riskEngineDatasourceProvider);
+  final models = await datasource.fetchChronicDiseaseCohorts();
+  return models.map((model) => model.toEntity()).toList();
 }
 
 // Statistics Provider

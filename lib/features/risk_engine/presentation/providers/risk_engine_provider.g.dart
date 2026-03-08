@@ -229,6 +229,48 @@ final class RiskProfileDetailsFamily extends $Family
   String toString() => r'riskProfileDetailsProvider';
 }
 
+@ProviderFor(chronicDiseaseCohorts)
+const chronicDiseaseCohortsProvider = ChronicDiseaseCohortsProvider._();
+
+final class ChronicDiseaseCohortsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<ChronicDiseaseCohortEntity>>,
+          List<ChronicDiseaseCohortEntity>,
+          FutureOr<List<ChronicDiseaseCohortEntity>>
+        >
+    with
+        $FutureModifier<List<ChronicDiseaseCohortEntity>>,
+        $FutureProvider<List<ChronicDiseaseCohortEntity>> {
+  const ChronicDiseaseCohortsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'chronicDiseaseCohortsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$chronicDiseaseCohortsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<ChronicDiseaseCohortEntity>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<ChronicDiseaseCohortEntity>> create(Ref ref) {
+    return chronicDiseaseCohorts(ref);
+  }
+}
+
+String _$chronicDiseaseCohortsHash() =>
+    r'c7bcc49386bb77512824f258e3768cda629d139a';
+
 @ProviderFor(riskEngineStats)
 const riskEngineStatsProvider = RiskEngineStatsProvider._();
 

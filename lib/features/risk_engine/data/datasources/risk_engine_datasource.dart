@@ -1,5 +1,6 @@
 import 'dart:math';
 import '../../../../core/utils/logger.dart';
+import '../models/chronic_disease_cohort_model.dart';
 import '../models/risk_profile_model.dart';
 import '../models/risk_factor_model.dart';
 import '../models/intervention_model.dart';
@@ -89,6 +90,235 @@ class RiskEngineDatasource {
     } catch (e) {
       Logger.error(
         'Error fetching risk profile',
+        tag: 'RiskEngineDatasource',
+        error: e,
+      );
+      rethrow;
+    }
+  }
+
+  // Add to existing RiskEngineDatasource class
+  Future<List<ChronicDiseaseCohortModel>> fetchChronicDiseaseCohorts() async {
+    try {
+      Logger.info(
+        'Fetching chronic disease cohorts',
+        tag: 'RiskEngineDatasource',
+      );
+
+      await Future.delayed(Duration(milliseconds: 800));
+
+      final now = DateTime.now();
+      final cohorts = [
+        ChronicDiseaseCohortModel(
+          id: 'CDC001',
+          diseaseType: 'diabetes',
+          diseaseName: 'Type 2 Diabetes',
+          totalPatients: 1900,
+          wellControlled: 820,
+          moderateControl: 730,
+          poorControl: 350,
+          avgRiskScore: 62.5,
+          hospitalizationRate: 0.08,
+          adherenceRate: 0.76,
+          riskTrend: [
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 180)),
+              value: 68.2,
+            ),
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 150)),
+              value: 66.8,
+            ),
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 120)),
+              value: 65.5,
+            ),
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 90)),
+              value: 64.2,
+            ),
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 60)),
+              value: 63.1,
+            ),
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 30)),
+              value: 62.5,
+            ),
+          ],
+          interventionsActive: 342,
+          interventionSuccessRate: 78.5,
+        ),
+        ChronicDiseaseCohortModel(
+          id: 'CDC002',
+          diseaseType: 'hypertension',
+          diseaseName: 'Hypertension',
+          totalPatients: 2200,
+          wellControlled: 1100,
+          moderateControl: 850,
+          poorControl: 250,
+          avgRiskScore: 58.3,
+          hospitalizationRate: 0.05,
+          adherenceRate: 0.82,
+          riskTrend: [
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 180)),
+              value: 61.5,
+            ),
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 150)),
+              value: 60.8,
+            ),
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 120)),
+              value: 60.2,
+            ),
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 90)),
+              value: 59.5,
+            ),
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 60)),
+              value: 58.9,
+            ),
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 30)),
+              value: 58.3,
+            ),
+          ],
+          interventionsActive: 287,
+          interventionSuccessRate: 82.3,
+        ),
+        ChronicDiseaseCohortModel(
+          id: 'CDC003',
+          diseaseType: 'cardiac',
+          diseaseName: 'Cardiac Risk / CAD',
+          totalPatients: 700,
+          wellControlled: 280,
+          moderateControl: 310,
+          poorControl: 110,
+          avgRiskScore: 72.8,
+          hospitalizationRate: 0.12,
+          adherenceRate: 0.71,
+          riskTrend: [
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 180)),
+              value: 76.5,
+            ),
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 150)),
+              value: 75.8,
+            ),
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 120)),
+              value: 74.9,
+            ),
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 90)),
+              value: 74.2,
+            ),
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 60)),
+              value: 73.5,
+            ),
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 30)),
+              value: 72.8,
+            ),
+          ],
+          interventionsActive: 156,
+          interventionSuccessRate: 73.8,
+        ),
+        ChronicDiseaseCohortModel(
+          id: 'CDC004',
+          diseaseType: 'copd',
+          diseaseName: 'COPD',
+          totalPatients: 320,
+          wellControlled: 120,
+          moderateControl: 140,
+          poorControl: 60,
+          avgRiskScore: 68.5,
+          hospitalizationRate: 0.15,
+          adherenceRate: 0.68,
+          riskTrend: [
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 180)),
+              value: 71.2,
+            ),
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 150)),
+              value: 70.5,
+            ),
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 120)),
+              value: 69.8,
+            ),
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 90)),
+              value: 69.3,
+            ),
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 60)),
+              value: 68.9,
+            ),
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 30)),
+              value: 68.5,
+            ),
+          ],
+          interventionsActive: 89,
+          interventionSuccessRate: 68.2,
+        ),
+        ChronicDiseaseCohortModel(
+          id: 'CDC005',
+          diseaseType: 'ckd',
+          diseaseName: 'Chronic Kidney Disease',
+          totalPatients: 180,
+          wellControlled: 60,
+          moderateControl: 85,
+          poorControl: 35,
+          avgRiskScore: 75.2,
+          hospitalizationRate: 0.18,
+          adherenceRate: 0.73,
+          riskTrend: [
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 180)),
+              value: 77.8,
+            ),
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 150)),
+              value: 77.2,
+            ),
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 120)),
+              value: 76.5,
+            ),
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 90)),
+              value: 76.0,
+            ),
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 60)),
+              value: 75.6,
+            ),
+            TrendDataPointModel(
+              date: now.subtract(Duration(days: 30)),
+              value: 75.2,
+            ),
+          ],
+          interventionsActive: 52,
+          interventionSuccessRate: 71.5,
+        ),
+      ];
+
+      Logger.info(
+        'Fetched ${cohorts.length} chronic disease cohorts',
+        tag: 'RiskEngineDatasource',
+      );
+      return cohorts;
+    } catch (e) {
+      Logger.error(
+        'Error fetching chronic disease cohorts',
         tag: 'RiskEngineDatasource',
         error: e,
       );
