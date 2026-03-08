@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../features/care_events/presentation/screens/care_event_details_screen.dart';
 import '../../features/care_events/presentation/screens/care_events_screen.dart';
+import '../../features/emergency_triage/presentation/screens/emergency_case_details_screen.dart';
+import '../../features/emergency_triage/presentation/screens/emergency_triage_screen.dart';
 import 'route_names.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/providers/auth_provider.dart';
@@ -127,8 +129,19 @@ final routerProvider = Provider<GoRouter>((ref) {
             name: 'emergency_triage',
             pageBuilder: (context, state) => NoTransitionPage(
               key: state.pageKey,
-              child: _PlaceholderScreen(title: 'Emergency Triage'),
+              child: const EmergencyTriageScreen(),
             ),
+          ),
+          GoRoute(
+            path: '/emergency-triage/:id',
+            name: 'emergency_case_details',
+            pageBuilder: (context, state) {
+              final id = state.pathParameters['id']!;
+              return NoTransitionPage(
+                key: state.pageKey,
+                child: EmergencyCaseDetailsScreen(caseId: id),
+              );
+            },
           ),
           GoRoute(
             path: RouteNames.riskEngine,
