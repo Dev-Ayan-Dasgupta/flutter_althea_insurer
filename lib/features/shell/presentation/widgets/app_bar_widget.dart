@@ -5,7 +5,6 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import 'user_avatar.dart';
-import '../providers/navigation_provider.dart';
 
 class AppBarWidget extends ConsumerWidget implements PreferredSizeWidget {
   final String title;
@@ -29,14 +28,8 @@ class AppBarWidget extends ConsumerWidget implements PreferredSizeWidget {
     return AppBar(
       elevation: 0,
       backgroundColor: isDark ? AppColors.darkSurface : AppColors.lightSurface,
-      leading: showMenuButton
-          ? IconButton(
-              icon: Icon(Icons.menu),
-              onPressed: () {
-                ref.read(drawerStateProvider.notifier).toggle();
-              },
-            )
-          : null,
+      // Remove the leading property - let Flutter handle the drawer button automatically
+      automaticallyImplyLeading: showMenuButton,
       title: Text(
         title,
         style: theme.textTheme.titleLarge?.copyWith(

@@ -17,7 +17,7 @@ final routerProvider = Provider<GoRouter>((ref) {
 
   return GoRouter(
     initialLocation: _getInitialLocation(authState, onboardingComplete),
-    debugLogDiagnostics: true,
+    // debugLogDiagnostics: true,
     redirect: (context, state) {
       final isAuthenticated = authState.maybeWhen(
         authenticated: (_) => true,

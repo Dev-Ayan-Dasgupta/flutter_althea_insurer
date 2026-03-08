@@ -96,7 +96,7 @@ class NavigationDrawerWidget extends ConsumerWidget {
                   onTap: () {
                     ref.read(navigationIndexProvider.notifier).setIndex(index);
                     context.go(item.route);
-                    ref.read(drawerStateProvider.notifier).close();
+                    Navigator.pop(context); // Close drawer
                   },
                 );
               },
@@ -109,23 +109,23 @@ class NavigationDrawerWidget extends ConsumerWidget {
             leading: Icon(Icons.settings_outlined),
             title: Text('Settings'),
             onTap: () {
+              Navigator.pop(context); // Close drawer
               context.push('/settings');
-              ref.read(drawerStateProvider.notifier).close();
             },
           ),
           ListTile(
             leading: Icon(Icons.help_outline),
             title: Text('Help & Support'),
             onTap: () {
+              Navigator.pop(context); // Close drawer
               context.push('/help');
-              ref.read(drawerStateProvider.notifier).close();
             },
           ),
           ListTile(
             leading: Icon(Icons.logout, color: AppColors.error),
             title: Text('Logout', style: TextStyle(color: AppColors.error)),
             onTap: () {
-              ref.read(drawerStateProvider.notifier).close();
+              Navigator.pop(context); // Close drawer
               ref.read(authProvider.notifier).logout();
             },
           ),

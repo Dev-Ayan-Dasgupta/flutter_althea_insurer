@@ -16,7 +16,6 @@ class ShellScreen extends ConsumerWidget {
     final isDesktop = context.isDesktop;
 
     return Scaffold(
-      key: Key('shell_scaffold'),
       appBar: AppBarWidget(title: title, showMenuButton: !isDesktop),
       drawer: !isDesktop ? NavigationDrawerWidget() : null,
       body: Row(
