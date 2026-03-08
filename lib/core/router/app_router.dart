@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../features/care_events/presentation/screens/care_event_details_screen.dart';
 import '../../features/care_events/presentation/screens/care_events_screen.dart';
+import '../../features/claims_prevention/presentation/screens/claims_prevention_screen.dart';
 import '../../features/emergency_triage/presentation/screens/emergency_case_details_screen.dart';
 import '../../features/emergency_triage/presentation/screens/emergency_triage_screen.dart';
 import '../../features/risk_engine/presentation/screens/patient_risk_details_screen.dart';
@@ -169,7 +170,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             name: 'claims_prevention',
             pageBuilder: (context, state) => NoTransitionPage(
               key: state.pageKey,
-              child: _PlaceholderScreen(title: 'Claims Prevention'),
+              child: const ClaimsPreventionScreen(),
             ),
           ),
           GoRoute(
