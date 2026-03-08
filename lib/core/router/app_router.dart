@@ -5,6 +5,8 @@ import '../../features/care_events/presentation/screens/care_event_details_scree
 import '../../features/care_events/presentation/screens/care_events_screen.dart';
 import '../../features/emergency_triage/presentation/screens/emergency_case_details_screen.dart';
 import '../../features/emergency_triage/presentation/screens/emergency_triage_screen.dart';
+import '../../features/risk_engine/presentation/screens/patient_risk_details_screen.dart';
+import '../../features/risk_engine/presentation/screens/risk_engine_screen.dart';
 import 'route_names.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/providers/auth_provider.dart';
@@ -148,8 +150,19 @@ final routerProvider = Provider<GoRouter>((ref) {
             name: 'risk_engine',
             pageBuilder: (context, state) => NoTransitionPage(
               key: state.pageKey,
-              child: _PlaceholderScreen(title: 'Risk Engine'),
+              child: const RiskEngineScreen(),
             ),
+          ),
+          GoRoute(
+            path: '/risk-engine/:id',
+            name: 'patient_risk_details',
+            pageBuilder: (context, state) {
+              final id = state.pathParameters['id']!;
+              return NoTransitionPage(
+                key: state.pageKey,
+                child: PatientRiskDetailsScreen(profileId: id),
+              );
+            },
           ),
           GoRoute(
             path: RouteNames.claimsPrevention,
