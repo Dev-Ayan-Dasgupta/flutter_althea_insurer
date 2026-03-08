@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../features/care_events/presentation/screens/care_event_details_screen.dart';
+import '../../features/care_events/presentation/screens/care_events_screen.dart';
 import 'route_names.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/providers/auth_provider.dart';
@@ -101,14 +103,24 @@ final routerProvider = Provider<GoRouter>((ref) {
               child: const ProfileScreen(),
             ),
           ),
-          // Placeholder routes for other sections
           GoRoute(
             path: RouteNames.careEvents,
             name: 'care_events',
             pageBuilder: (context, state) => NoTransitionPage(
               key: state.pageKey,
-              child: _PlaceholderScreen(title: 'Care Events'),
+              child: const CareEventsScreen(),
             ),
+          ),
+          GoRoute(
+            path: '/care-events/:id',
+            name: 'care_event_details',
+            pageBuilder: (context, state) {
+              final id = state.pathParameters['id']!;
+              return NoTransitionPage(
+                key: state.pageKey,
+                child: CareEventDetailsScreen(eventId: id),
+              );
+            },
           ),
           GoRoute(
             path: RouteNames.emergencyTriage,

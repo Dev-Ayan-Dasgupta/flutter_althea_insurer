@@ -139,8 +139,8 @@ extension BuildContextExtensions on BuildContext {
 
   // Navigation
   void pop<T>([T? result]) => Navigator.of(this).pop(result);
-  Future<T?> push<T>(Widget page) =>
-      Navigator.of(this).push(MaterialPageRoute(builder: (_) => page));
+  // Future<T?> push<T>(Widget page) =>
+  //     Navigator.of(this).push(MaterialPageRoute(builder: (_) => page));
 
   // Show SnackBar
   void showSnackBar(
