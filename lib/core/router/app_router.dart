@@ -7,6 +7,11 @@ import '../../features/claims_prevention/presentation/screens/claims_prevention_
 import '../../features/emergency_triage/presentation/screens/emergency_case_details_screen.dart';
 import '../../features/emergency_triage/presentation/screens/emergency_triage_screen.dart';
 import '../../features/fraud_detection/presentation/screens/fraud_detection_screen.dart';
+import '../../features/help_support/domain/entities/help_article_entity.dart';
+import '../../features/help_support/presentation/screens/article_detail_screen.dart';
+import '../../features/help_support/presentation/screens/contact_support_screen.dart';
+import '../../features/help_support/presentation/screens/faq_screen.dart';
+import '../../features/help_support/presentation/screens/help_support_screen.dart';
 import '../../features/live_alerts/presentation/screens/live_alerts_screen.dart';
 import '../../features/medication_adherence/presentation/screens/medication_adherence_screen.dart';
 import '../../features/network_readiness/presentation/screens/network_readiness_screen.dart';
@@ -95,6 +100,29 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: RouteNames.profile,
         name: 'profile',
         builder: (context, state) => const ProfileScreen(),
+      ),
+
+      // Help & Support Routes
+      GoRoute(
+        path: RouteNames.faq,
+        name: 'faq',
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          return FAQScreen(extra: extra);
+        },
+      ),
+      GoRoute(
+        path: RouteNames.contactSupport,
+        name: 'contact_support',
+        builder: (context, state) => const ContactSupportScreen(),
+      ),
+      GoRoute(
+        path: '/article-detail',
+        name: 'article_detail',
+        builder: (context, state) {
+          final article = state.extra as HelpArticleEntity;
+          return ArticleDetailScreen(article: article);
+        },
       ),
 
       // Main Shell Routes
@@ -236,11 +264,11 @@ final routerProvider = Provider<GoRouter>((ref) {
             ),
           ),
           GoRoute(
-            path: RouteNames.help,
-            name: 'help',
+            path: RouteNames.helpSupport,
+            name: 'help_support',
             pageBuilder: (context, state) => NoTransitionPage(
               key: state.pageKey,
-              child: _PlaceholderScreen(title: 'Help & Support'),
+              child: const HelpSupportScreen(),
             ),
           ),
           GoRoute(
@@ -330,7 +358,7 @@ String _getPageTitle(String path) {
       return 'Profile';
     case '/settings':
       return 'Settings';
-    case '/help':
+    case '/help_support':
       return 'Help & Support';
     case '/notifications':
       return 'Notifications';

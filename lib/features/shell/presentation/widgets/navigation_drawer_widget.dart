@@ -118,7 +118,7 @@ class NavigationDrawerWidget extends ConsumerWidget {
             title: Text('Help & Support'),
             onTap: () {
               Navigator.pop(context); // Close drawer
-              context.push('/help');
+              context.push('/help-support');
             },
           ),
           ListTile(

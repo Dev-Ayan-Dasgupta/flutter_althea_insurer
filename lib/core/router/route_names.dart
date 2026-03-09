@@ -49,7 +49,12 @@ class RouteNames {
   static const String profile = '/profile';
   static const String settings = '/settings';
   static const String notifications = '/notifications';
-  static const String help = '/help';
+
+  // Help & Support
+  static const String helpAndSupport = '/help-support';
+  static const String helpSupport = '/help-support';
+  static const String faq = '/faq';
+  static const String contactSupport = '/contact-support';
 
   // Legal
   static const String privacy = '/legal/privacy';

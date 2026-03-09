@@ -121,11 +121,11 @@ class NavigationRailWidget extends ConsumerWidget {
                     label: 'Help & Support',
                     icon: Icons.help_outline,
                     selectedIcon: Icons.help,
-                    route: '/help',
+                    route: '/help-support',
                   ),
                   isSelected: false,
                   onTap: () {
-                    context.push('/help');
+                    context.push('/help-support');
                   },
                 ),
               ],

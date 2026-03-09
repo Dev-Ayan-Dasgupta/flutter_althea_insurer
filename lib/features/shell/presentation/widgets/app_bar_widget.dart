@@ -132,7 +132,7 @@ class AppBarWidget extends ConsumerWidget implements PreferredSizeWidget {
                 context.push(RouteNames.settings);
                 break;
               case 'help':
-                context.push(RouteNames.help);
+                context.push(RouteNames.helpAndSupport);
                 break;
               case 'logout':
                 _showLogoutDialog(context, ref);
