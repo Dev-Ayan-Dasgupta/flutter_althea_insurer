@@ -331,6 +331,40 @@ class SettingsScreen extends ConsumerWidget {
                 ],
               ),
 
+              // Analytics & Insights
+              SettingsSection(
+                title: 'Analytics & Insights',
+                children: [
+                  PreferenceTile(
+                    icon: Icons.analytics,
+                    title: 'User Analytics',
+                    subtitle: 'View your activity and usage statistics',
+                    trailing: Icon(Icons.chevron_right),
+                    onTap: () {
+                      context.push(RouteNames.analytics);
+                    },
+                  ),
+                  PreferenceTile(
+                    icon: Icons.notifications,
+                    title: 'Notifications',
+                    subtitle: 'View all notifications',
+                    trailing: Icon(Icons.chevron_right),
+                    onTap: () {
+                      context.push(RouteNames.notifications);
+                    },
+                  ),
+                  PreferenceTile(
+                    icon: Icons.notifications_active,
+                    title: 'Notification Preferences',
+                    subtitle: 'Manage notification settings',
+                    trailing: Icon(Icons.chevron_right),
+                    onTap: () {
+                      context.push(RouteNames.notificationPreferences);
+                    },
+                  ),
+                ],
+              ),
+
               // About Section
               Consumer(
                 builder: (context, ref, child) {
@@ -345,7 +379,7 @@ class SettingsScreen extends ConsumerWidget {
                         subtitle: versionAsync.when(
                           data: (version) => version,
                           loading: () => 'Loading...',
-                          error: (_, __) => 'Unknown',
+                          error: (_, _) => 'Unknown',
                         ),
                       ),
                       PreferenceTile(

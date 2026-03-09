@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../features/analytics/presentation/screens/analytics_dashboard_screen.dart';
 import '../../features/care_events/presentation/screens/care_event_details_screen.dart';
 import '../../features/care_events/presentation/screens/care_events_screen.dart';
 import '../../features/claims_prevention/presentation/screens/claims_prevention_screen.dart';
@@ -15,6 +16,8 @@ import '../../features/help_support/presentation/screens/help_support_screen.dar
 import '../../features/live_alerts/presentation/screens/live_alerts_screen.dart';
 import '../../features/medication_adherence/presentation/screens/medication_adherence_screen.dart';
 import '../../features/network_readiness/presentation/screens/network_readiness_screen.dart';
+import '../../features/notifications/presentation/screens/notification_preferences_screen.dart';
+import '../../features/notifications/presentation/screens/notifications_screen.dart';
 import '../../features/population_health/presentation/screens/population_health_screen.dart';
 import '../../features/risk_engine/presentation/screens/patient_risk_details_screen.dart';
 import '../../features/risk_engine/presentation/screens/risk_engine_screen.dart';
@@ -123,6 +126,18 @@ final routerProvider = Provider<GoRouter>((ref) {
           final article = state.extra as HelpArticleEntity;
           return ArticleDetailScreen(article: article);
         },
+      ),
+
+      // Notifications Route
+      GoRoute(
+        path: RouteNames.notifications,
+        name: 'notifications',
+        builder: (context, state) => const NotificationsScreen(),
+      ),
+      GoRoute(
+        path: RouteNames.notificationPreferences,
+        name: 'notification_preferences',
+        builder: (context, state) => const NotificationPreferencesScreen(),
       ),
 
       // Main Shell Routes
@@ -272,11 +287,11 @@ final routerProvider = Provider<GoRouter>((ref) {
             ),
           ),
           GoRoute(
-            path: RouteNames.notifications,
-            name: 'notifications',
+            path: RouteNames.analytics,
+            name: 'analytics',
             pageBuilder: (context, state) => NoTransitionPage(
               key: state.pageKey,
-              child: _PlaceholderScreen(title: 'Notifications'),
+              child: const AnalyticsDashboardScreen(),
             ),
           ),
         ],
@@ -362,30 +377,9 @@ String _getPageTitle(String path) {
       return 'Help & Support';
     case '/notifications':
       return 'Notifications';
+    case '/analytics':
+      return 'Analytics';
     default:
       return 'Insurer Partner';
-  }
-}
-
-// Placeholder screen for unimplemented routes
-class _PlaceholderScreen extends StatelessWidget {
-  final String title;
-
-  const _PlaceholderScreen({required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.construction, size: 64, color: Colors.grey),
-          SizedBox(height: 16),
-          Text(title, style: Theme.of(context).textTheme.headlineMedium),
-          SizedBox(height: 8),
-          Text('Coming soon...', style: Theme.of(context).textTheme.bodyLarge),
-        ],
-      ),
-    );
   }
 }

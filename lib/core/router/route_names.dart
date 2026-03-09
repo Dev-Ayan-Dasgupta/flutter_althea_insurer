@@ -48,7 +48,13 @@ class RouteNames {
   // Settings & Profile
   static const String profile = '/profile';
   static const String settings = '/settings';
+
+  // Notifications
   static const String notifications = '/notifications';
+  static const String notificationPreferences = '/notification-preferences';
+
+  // Analytics
+  static const String analytics = '/analytics';
 
   // Help & Support
   static const String helpAndSupport = '/help-support';

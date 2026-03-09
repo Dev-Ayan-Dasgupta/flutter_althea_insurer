@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/router/route_names.dart';
+import '../../../../core/widgets/notification_icon_button.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import 'user_avatar.dart';
 
@@ -38,16 +39,7 @@ class AppBarWidget extends ConsumerWidget implements PreferredSizeWidget {
       ),
       actions: [
         // Notifications
-        IconButton(
-          icon: Badge(
-            label: Text('3'),
-            child: Icon(Icons.notifications_outlined),
-          ),
-          onPressed: () {
-            context.push(RouteNames.notifications);
-          },
-          tooltip: 'Notifications',
-        ),
+        NotificationIconButton(),
         SizedBox(width: 8),
 
         // Profile Menu
