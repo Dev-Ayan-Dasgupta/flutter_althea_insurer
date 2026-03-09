@@ -39,22 +39,37 @@ class ShimmerLoading extends StatelessWidget {
 
 class ShimmerCard extends StatelessWidget {
   final double? height;
+  final double? width;
+  final double? radius;
 
-  const ShimmerCard({super.key, this.height});
+  const ShimmerCard({super.key, this.height, this.width, this.radius});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: height,
+      width: width,
       padding: EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ShimmerLoading(width: 120, height: 16),
+          ShimmerLoading(
+            width: 120,
+            height: 16,
+            borderRadius: BorderRadius.circular(radius ?? 8),
+          ),
           SizedBox(height: 12),
-          ShimmerLoading(width: double.infinity, height: 40),
+          ShimmerLoading(
+            width: double.infinity,
+            height: 40,
+            borderRadius: BorderRadius.circular(radius ?? 8),
+          ),
           SizedBox(height: 8),
-          ShimmerLoading(width: 180, height: 12),
+          ShimmerLoading(
+            width: 180,
+            height: 12,
+            borderRadius: BorderRadius.circular(radius ?? 8),
+          ),
         ],
       ),
     );

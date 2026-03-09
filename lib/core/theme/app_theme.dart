@@ -3,10 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../constants/app_colors.dart';
 
 class AppTheme {
-  AppTheme._();
-
   // Light Theme
-  static ThemeData lightTheme = ThemeData(
+  ThemeData get lightTheme => ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
     colorScheme: ColorScheme.light(
@@ -83,7 +81,7 @@ class AppTheme {
   );
 
   // Dark Theme
-  static ThemeData darkTheme = ThemeData(
+  ThemeData get darkTheme => ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
     colorScheme: ColorScheme.dark(

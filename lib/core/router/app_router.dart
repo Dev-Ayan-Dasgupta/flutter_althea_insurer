@@ -14,6 +14,8 @@ import '../../features/population_health/presentation/screens/population_health_
 import '../../features/risk_engine/presentation/screens/patient_risk_details_screen.dart';
 import '../../features/risk_engine/presentation/screens/risk_engine_screen.dart';
 import '../../features/safety_monitor/presentation/screens/safety_monitor_screen.dart';
+import '../../features/settings/presentation/screens/profile_screen.dart';
+import '../../features/settings/presentation/screens/settings_screen.dart';
 import 'route_names.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/providers/auth_provider.dart';
@@ -21,7 +23,6 @@ import '../../features/auth/presentation/providers/auth_state.dart';
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
 import '../../features/dashboard/presentation/screens/dashboard_screen.dart';
 import '../../features/shell/presentation/screens/shell_screen.dart';
-import '../../features/profile/presentation/screens/profile_screen.dart';
 
 // Router Provider
 final routerProvider = Provider<GoRouter>((ref) {
@@ -89,6 +90,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         ),
       ),
 
+      // Profile Route
+      GoRoute(
+        path: RouteNames.profile,
+        name: 'profile',
+        builder: (context, state) => const ProfileScreen(),
+      ),
+
       // Main Shell Routes
       ShellRoute(
         builder: (context, state, child) {
@@ -104,14 +112,6 @@ final routerProvider = Provider<GoRouter>((ref) {
             pageBuilder: (context, state) => NoTransitionPage(
               key: state.pageKey,
               child: const DashboardScreen(),
-            ),
-          ),
-          GoRoute(
-            path: RouteNames.profile,
-            name: 'profile',
-            pageBuilder: (context, state) => NoTransitionPage(
-              key: state.pageKey,
-              child: const ProfileScreen(),
             ),
           ),
           GoRoute(
@@ -232,7 +232,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             name: 'settings',
             pageBuilder: (context, state) => NoTransitionPage(
               key: state.pageKey,
-              child: _PlaceholderScreen(title: 'Settings'),
+              child: const SettingsScreen(),
             ),
           ),
           GoRoute(

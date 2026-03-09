@@ -107,7 +107,7 @@ final class NavigationItemsProvider
   }
 }
 
-String _$navigationItemsHash() => r'33da10c9898f0ca2652fbf54551e8f3e4c715daf';
+String _$navigationItemsHash() => r'0f936479926deec24517896de994acf1361e036d';
 
 @ProviderFor(isDrawerOpen)
 const isDrawerOpenProvider = IsDrawerOpenProvider._();

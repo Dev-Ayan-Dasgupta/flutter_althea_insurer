@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../constants/app_colors.dart';
 import '../router/route_names.dart';
+import '../theme/theme_provider.dart';
 
 class AppDrawer extends ConsumerWidget {
   const AppDrawer({super.key});
@@ -181,6 +182,31 @@ class AppDrawer extends ConsumerWidget {
             ),
             child: Column(
               children: [
+                Consumer(
+                  builder: (context, ref, child) {
+                    final themeMode = ref.watch(themeModeProvider);
+                    final isDarkMode = themeMode == ThemeMode.dark;
+
+                    return ListTile(
+                      leading: Icon(
+                        isDarkMode ? Icons.light_mode : Icons.dark_mode,
+                        color: isDark
+                            ? AppColors.darkTextSecondary
+                            : AppColors.lightTextSecondary,
+                      ),
+                      title: Text(
+                        isDarkMode ? 'Light Mode' : 'Dark Mode',
+                        style: theme.textTheme.bodyMedium,
+                      ),
+                      onTap: () {
+                        ref
+                            .read(themeModeProvider.notifier)
+                            .toggleTheme(!isDarkMode);
+                        Navigator.pop(context);
+                      },
+                    );
+                  },
+                ),
                 ListTile(
                   leading: Icon(
                     Icons.settings,
@@ -190,7 +216,7 @@ class AppDrawer extends ConsumerWidget {
                   ),
                   title: Text('Settings', style: theme.textTheme.bodyMedium),
                   onTap: () {
-                    // TODO: Navigate to settings
+                    context.go(RouteNames.settings);
                     Navigator.pop(context);
                   },
                 ),
