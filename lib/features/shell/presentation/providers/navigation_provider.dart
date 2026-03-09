@@ -74,6 +74,15 @@ List<NavigationItem> navigationItems(Ref ref) {
       selectedIcon: Icons.people,
       route: RouteNames.populationHealth,
     ),
+
+    // Safety Monitor Section
+    NavigationItem(
+      id: 'safety-monitor',
+      label: 'Safety Monitor',
+      icon: Icons.shield_outlined,
+      selectedIcon: Icons.shield,
+      route: RouteNames.safetyMonitor,
+    ),
   ];
 }
 

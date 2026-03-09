@@ -36,6 +36,9 @@ class RouteNames {
   static const String medicationAdherence = '/population-health/medication';
   static const String elderSafety = '/population-health/elder-safety';
 
+  // Safety Monitor
+  static const String safetyMonitor = '/safety-monitor';
+
   // Settings & Profile
   static const String profile = '/profile';
   static const String settings = '/settings';

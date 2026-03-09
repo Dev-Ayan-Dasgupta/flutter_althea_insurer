@@ -10,6 +10,7 @@ import '../../features/network_readiness/presentation/screens/network_readiness_
 import '../../features/population_health/presentation/screens/population_health_screen.dart';
 import '../../features/risk_engine/presentation/screens/patient_risk_details_screen.dart';
 import '../../features/risk_engine/presentation/screens/risk_engine_screen.dart';
+import '../../features/safety_monitor/presentation/screens/safety_monitor_screen.dart';
 import 'route_names.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/providers/auth_provider.dart';
@@ -192,6 +193,14 @@ final routerProvider = Provider<GoRouter>((ref) {
             ),
           ),
           GoRoute(
+            path: RouteNames.safetyMonitor,
+            name: 'safety_monitor',
+            pageBuilder: (context, state) => NoTransitionPage(
+              key: state.pageKey,
+              child: const SafetyMonitorScreen(),
+            ),
+          ),
+          GoRoute(
             path: RouteNames.settings,
             name: 'settings',
             pageBuilder: (context, state) => NoTransitionPage(
@@ -282,6 +291,8 @@ String _getPageTitle(String path) {
       return 'Network Readiness';
     case '/population-health':
       return 'Population Health';
+    case '/safety-monitor':
+      return 'Safety Monitor';
     case '/profile':
       return 'Profile';
     case '/settings':
