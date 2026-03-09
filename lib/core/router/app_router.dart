@@ -7,6 +7,7 @@ import '../../features/claims_prevention/presentation/screens/claims_prevention_
 import '../../features/emergency_triage/presentation/screens/emergency_case_details_screen.dart';
 import '../../features/emergency_triage/presentation/screens/emergency_triage_screen.dart';
 import '../../features/fraud_detection/presentation/screens/fraud_detection_screen.dart';
+import '../../features/live_alerts/presentation/screens/live_alerts_screen.dart';
 import '../../features/medication_adherence/presentation/screens/medication_adherence_screen.dart';
 import '../../features/network_readiness/presentation/screens/network_readiness_screen.dart';
 import '../../features/population_health/presentation/screens/population_health_screen.dart';
@@ -219,6 +220,14 @@ final routerProvider = Provider<GoRouter>((ref) {
             ),
           ),
           GoRoute(
+            path: RouteNames.liveAlerts,
+            name: 'live_alerts',
+            pageBuilder: (context, state) => NoTransitionPage(
+              key: state.pageKey,
+              child: const LiveAlertsScreen(),
+            ),
+          ),
+          GoRoute(
             path: RouteNames.settings,
             name: 'settings',
             pageBuilder: (context, state) => NoTransitionPage(
@@ -315,6 +324,8 @@ String _getPageTitle(String path) {
       return 'Medication Adherence';
     case '/fraud-detection':
       return 'Fraud Detection';
+    case '/live-alerts':
+      return 'Live Alerts';
     case '/profile':
       return 'Profile';
     case '/settings':

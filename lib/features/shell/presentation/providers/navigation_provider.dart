@@ -101,6 +101,15 @@ List<NavigationItem> navigationItems(Ref ref) {
       selectedIcon: Icons.security,
       route: RouteNames.fraudDetection,
     ),
+
+    // Live Alerts Section
+    NavigationItem(
+      id: 'live-alerts',
+      label: 'Live Alerts',
+      icon: Icons.notifications_active_outlined,
+      selectedIcon: Icons.notifications_active,
+      route: RouteNames.liveAlerts,
+    ),
   ];
 }
 

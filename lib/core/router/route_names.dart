@@ -42,6 +42,9 @@ class RouteNames {
   // Fraud Detection
   static const String fraudDetection = '/fraud-detection';
 
+  // Live Alerts
+  static const String liveAlerts = '/live-alerts';
+
   // Settings & Profile
   static const String profile = '/profile';
   static const String settings = '/settings';
