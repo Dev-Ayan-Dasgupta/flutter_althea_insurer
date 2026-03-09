@@ -6,6 +6,7 @@ import '../../features/care_events/presentation/screens/care_events_screen.dart'
 import '../../features/claims_prevention/presentation/screens/claims_prevention_screen.dart';
 import '../../features/emergency_triage/presentation/screens/emergency_case_details_screen.dart';
 import '../../features/emergency_triage/presentation/screens/emergency_triage_screen.dart';
+import '../../features/medication_adherence/presentation/screens/medication_adherence_screen.dart';
 import '../../features/network_readiness/presentation/screens/network_readiness_screen.dart';
 import '../../features/population_health/presentation/screens/population_health_screen.dart';
 import '../../features/risk_engine/presentation/screens/patient_risk_details_screen.dart';
@@ -201,6 +202,14 @@ final routerProvider = Provider<GoRouter>((ref) {
             ),
           ),
           GoRoute(
+            path: RouteNames.medicationAdherence,
+            name: 'medication_adherence',
+            pageBuilder: (context, state) => NoTransitionPage(
+              key: state.pageKey,
+              child: const MedicationAdherenceScreen(),
+            ),
+          ),
+          GoRoute(
             path: RouteNames.settings,
             name: 'settings',
             pageBuilder: (context, state) => NoTransitionPage(
@@ -293,6 +302,8 @@ String _getPageTitle(String path) {
       return 'Population Health';
     case '/safety-monitor':
       return 'Safety Monitor';
+    case '/medication-adherence':
+      return 'Medication Adherence';
     case '/profile':
       return 'Profile';
     case '/settings':

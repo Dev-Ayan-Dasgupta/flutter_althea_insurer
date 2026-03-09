@@ -313,9 +313,9 @@ class SafetyMonitorScreen extends ConsumerWidget {
 
   Widget _buildMobileLayout(
     BuildContext context,
-    AsyncValue cohortsAsync,
-    AsyncValue alertsAsync,
-    AsyncValue actionsAsync,
+    AsyncValue<List<CohortEntity>> cohortsAsync,
+    AsyncValue<List<SafetyAlertEntity>> alertsAsync,
+    AsyncValue<List<PreventiveActionEntity>> actionsAsync,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

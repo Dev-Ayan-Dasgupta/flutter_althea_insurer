@@ -83,6 +83,15 @@ List<NavigationItem> navigationItems(Ref ref) {
       selectedIcon: Icons.shield,
       route: RouteNames.safetyMonitor,
     ),
+
+    // Medication Adherence Section
+    NavigationItem(
+      id: 'medication-adherence',
+      label: 'Medication Adherence',
+      icon: Icons.medication_outlined,
+      selectedIcon: Icons.medication,
+      route: RouteNames.medicationAdherence,
+    ),
   ];
 }
 
