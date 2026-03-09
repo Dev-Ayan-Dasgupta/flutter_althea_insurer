@@ -39,6 +39,9 @@ class RouteNames {
   // Safety Monitor
   static const String safetyMonitor = '/safety-monitor';
 
+  // Fraud Detection
+  static const String fraudDetection = '/fraud-detection';
+
   // Settings & Profile
   static const String profile = '/profile';
   static const String settings = '/settings';

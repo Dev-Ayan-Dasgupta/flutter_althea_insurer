@@ -92,6 +92,15 @@ List<NavigationItem> navigationItems(Ref ref) {
       selectedIcon: Icons.medication,
       route: RouteNames.medicationAdherence,
     ),
+
+    // Fraud Detection Section
+    NavigationItem(
+      id: 'fraud-detection',
+      label: 'Fraud Detection',
+      icon: Icons.security_outlined,
+      selectedIcon: Icons.security,
+      route: RouteNames.fraudDetection,
+    ),
   ];
 }
 
