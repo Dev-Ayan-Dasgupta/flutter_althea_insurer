@@ -375,12 +375,39 @@ class SettingsScreen extends ConsumerWidget {
                     children: [
                       PreferenceTile(
                         icon: Icons.info,
+                        title: 'About AltheaCare',
+                        subtitle: 'Learn more about the app',
+                        trailing: Icon(Icons.chevron_right),
+                        onTap: () {
+                          context.push(RouteNames.about);
+                        },
+                      ),
+                      PreferenceTile(
+                        icon: Icons.description,
                         title: 'Version',
                         subtitle: versionAsync.when(
                           data: (version) => version,
                           loading: () => 'Loading...',
-                          error: (_, _) => 'Unknown',
+                          error: (_, __) => 'Unknown',
                         ),
+                      ),
+                      PreferenceTile(
+                        icon: Icons.privacy_tip,
+                        title: 'Privacy Policy',
+                        subtitle: 'View our privacy policy',
+                        trailing: Icon(Icons.chevron_right),
+                        onTap: () {
+                          context.push(RouteNames.privacy);
+                        },
+                      ),
+                      PreferenceTile(
+                        icon: Icons.gavel,
+                        title: 'Terms of Service',
+                        subtitle: 'View terms and conditions',
+                        trailing: Icon(Icons.chevron_right),
+                        onTap: () {
+                          context.push(RouteNames.terms);
+                        },
                       ),
                       PreferenceTile(
                         icon: Icons.update,
@@ -392,15 +419,6 @@ class SettingsScreen extends ConsumerWidget {
                             context,
                             'You are on the latest version',
                           );
-                        },
-                      ),
-                      PreferenceTile(
-                        icon: Icons.help,
-                        title: 'Help & Support',
-                        subtitle: 'Get help with AltheaCare',
-                        trailing: Icon(Icons.chevron_right),
-                        onTap: () {
-                          _showComingSoonDialog(context, 'Help & Support');
                         },
                       ),
                     ],

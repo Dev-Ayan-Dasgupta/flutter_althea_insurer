@@ -13,6 +13,9 @@ import '../../features/help_support/presentation/screens/article_detail_screen.d
 import '../../features/help_support/presentation/screens/contact_support_screen.dart';
 import '../../features/help_support/presentation/screens/faq_screen.dart';
 import '../../features/help_support/presentation/screens/help_support_screen.dart';
+import '../../features/legal/presentation/screens/about_screen.dart';
+import '../../features/legal/presentation/screens/privacy_policy_screen.dart';
+import '../../features/legal/presentation/screens/terms_of_service_screen.dart';
 import '../../features/live_alerts/presentation/screens/live_alerts_screen.dart';
 import '../../features/medication_adherence/presentation/screens/medication_adherence_screen.dart';
 import '../../features/network_readiness/presentation/screens/network_readiness_screen.dart';
@@ -138,6 +141,23 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: RouteNames.notificationPreferences,
         name: 'notification_preferences',
         builder: (context, state) => const NotificationPreferencesScreen(),
+      ),
+
+      // Legal Routes
+      GoRoute(
+        path: RouteNames.privacy,
+        name: 'privacy',
+        builder: (context, state) => const PrivacyPolicyScreen(),
+      ),
+      GoRoute(
+        path: RouteNames.terms,
+        name: 'terms',
+        builder: (context, state) => const TermsOfServiceScreen(),
+      ),
+      GoRoute(
+        path: RouteNames.about,
+        name: 'about',
+        builder: (context, state) => const AboutScreen(),
       ),
 
       // Main Shell Routes
