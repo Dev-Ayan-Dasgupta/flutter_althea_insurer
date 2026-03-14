@@ -66,4 +66,14 @@ class RouteNames {
   static const String privacy = '/legal/privacy';
   static const String terms = '/legal/terms';
   static const String about = '/legal/about';
+
+  // Insuree Management
+  static const String insureeManagement = '/insuree-management';
+  static const String addInsuree = '/add-insuree';
+  static const String insureeDetails = '/insuree-details';
+
+  // Payment
+  static const String payment = '/payment';
+  static const String paymentHistory = '/payment-history';
+  static const String invoice = '/invoice';
 }

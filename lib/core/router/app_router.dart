@@ -13,6 +13,10 @@ import '../../features/help_support/presentation/screens/article_detail_screen.d
 import '../../features/help_support/presentation/screens/contact_support_screen.dart';
 import '../../features/help_support/presentation/screens/faq_screen.dart';
 import '../../features/help_support/presentation/screens/help_support_screen.dart';
+import '../../features/insuree_management/domain/entities/insuree_entity.dart';
+import '../../features/insuree_management/presentation/screens/add_insuree_screen.dart';
+import '../../features/insuree_management/presentation/screens/insuree_details_screen.dart';
+import '../../features/insuree_management/presentation/screens/insuree_management_screen.dart';
 import '../../features/legal/presentation/screens/about_screen.dart';
 import '../../features/legal/presentation/screens/privacy_policy_screen.dart';
 import '../../features/legal/presentation/screens/terms_of_service_screen.dart';
@@ -21,6 +25,10 @@ import '../../features/medication_adherence/presentation/screens/medication_adhe
 import '../../features/network_readiness/presentation/screens/network_readiness_screen.dart';
 import '../../features/notifications/presentation/screens/notification_preferences_screen.dart';
 import '../../features/notifications/presentation/screens/notifications_screen.dart';
+import '../../features/payment/domain/entities/invoice_entity.dart';
+import '../../features/payment/presentation/screens/invoice_screen.dart';
+import '../../features/payment/presentation/screens/payment_history_screen.dart';
+import '../../features/payment/presentation/screens/payment_screen.dart';
 import '../../features/population_health/presentation/screens/population_health_screen.dart';
 import '../../features/risk_engine/presentation/screens/patient_risk_details_screen.dart';
 import '../../features/risk_engine/presentation/screens/risk_engine_screen.dart';
@@ -158,6 +166,44 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: RouteNames.about,
         name: 'about',
         builder: (context, state) => const AboutScreen(),
+      ),
+
+      // Insuree Management Routes
+      GoRoute(
+        path: RouteNames.addInsuree,
+        name: 'add_insuree',
+        builder: (context, state) => const AddInsureeScreen(),
+      ),
+      GoRoute(
+        path: RouteNames.insureeDetails,
+        name: 'insuree_details',
+        builder: (context, state) {
+          final insuree = state.extra as InsureeEntity;
+          return InsureeDetailsScreen(insuree: insuree);
+        },
+      ),
+
+      // Payment Routes
+      GoRoute(
+        path: RouteNames.payment,
+        name: 'payment',
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          return PaymentScreen(extra: extra);
+        },
+      ),
+      GoRoute(
+        path: RouteNames.paymentHistory,
+        name: 'payment_history',
+        builder: (context, state) => const PaymentHistoryScreen(),
+      ),
+      GoRoute(
+        path: RouteNames.invoice,
+        name: 'invoice',
+        builder: (context, state) {
+          final invoice = state.extra as InvoiceEntity;
+          return InvoiceScreen(invoice: invoice);
+        },
       ),
 
       // Main Shell Routes
@@ -314,6 +360,14 @@ final routerProvider = Provider<GoRouter>((ref) {
               child: const AnalyticsDashboardScreen(),
             ),
           ),
+          GoRoute(
+            path: RouteNames.insureeManagement,
+            name: 'insuree_management',
+            pageBuilder: (context, state) => NoTransitionPage(
+              key: state.pageKey,
+              child: const InsureeManagementScreen(),
+            ),
+          ),
         ],
       ),
     ],
@@ -399,6 +453,16 @@ String _getPageTitle(String path) {
       return 'Notifications';
     case '/analytics':
       return 'Analytics';
+    case '/insuree-management':
+      return 'Insuree Management';
+    case '/add-insuree':
+      return 'Add Insuree';
+    case '/payment':
+      return 'Payment';
+    case '/payment-history':
+      return 'Payment History';
+    case '/invoice':
+      return 'Invoice';
     default:
       return 'Insurer Partner';
   }

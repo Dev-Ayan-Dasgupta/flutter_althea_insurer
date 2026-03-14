@@ -370,7 +370,7 @@ final class OnboardingNotifierProvider
         from: null,
         argument: null,
         retry: null,
-        name: r'onboardingProvider',
+        name: r'onboardingNotifierProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,

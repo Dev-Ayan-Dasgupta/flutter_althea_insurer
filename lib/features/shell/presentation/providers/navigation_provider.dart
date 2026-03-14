@@ -110,6 +110,15 @@ List<NavigationItem> navigationItems(Ref ref) {
       selectedIcon: Icons.notifications_active,
       route: RouteNames.liveAlerts,
     ),
+
+    // Insuree Management Section
+    NavigationItem(
+      id: 'insuree-management',
+      label: 'Insuree Management',
+      icon: Icons.person_outline_rounded,
+      selectedIcon: Icons.person,
+      route: RouteNames.insureeManagement,
+    ),
   ];
 }
 
